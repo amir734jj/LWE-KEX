@@ -9,5 +9,5 @@ echo
 echo -e "Peikert KEX (recommended to use, easy to implement):"
 sage Peikert.sage
 echo
-echo -e "Regev newHope (recommended to use but difficult to implement):"
+echo -e "newHope KEX (recommended to use but difficult to implement):"
 sage newHope.sage
