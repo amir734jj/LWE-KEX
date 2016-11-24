@@ -1,2 +1,4 @@
 # LWE-KEX
-LWE-KEX (Ding, Peikrt and newHope) implementations all using SageMath
+LWE-KEX (Regev, Ding, Peikrt and newHope) implementations all using SageMath
+
+Do run the code make sure you installed SageMath and then run ./test.sh to test implementations
