@@ -1,2 +1,2 @@
 # LWE-KEX
-LWE-KEX implementations all using SageMath
+LWE-KEX (Ding, Peikrt and newHope) implementations all using SageMath
