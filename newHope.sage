@@ -82,22 +82,21 @@ shared = generate_polynomial()
 # Alice values
 alice_secret = generate_polynomial()
 alice_error = generate_error()
-alice_value = shared * alice_secret +  2 * alice_error
+alice_value = shared * alice_secret + alice_error
 
 # Bob values
 bob_secret = generate_polynomial()
 bob_error = generate_error()
-bob_value = shared * bob_secret + 2 * bob_error
+bob_value = shared * bob_secret + bob_error
 
 # Bob key
 temp_error = generate_error()
-bob_key = alice_value * bob_secret + 2 * temp_error
+bob_key = alice_value * bob_secret + temp_error
 w = newhope_generate_signal(bob_key)
 bob_key_binary = newhope_reconcile(bob_key, w)
 
 # Alice key
-temp_error = generate_error()
-alice_key = bob_value * alice_secret + 2 * temp_error
+alice_key = bob_value * alice_secret
 alice_key_binary = newhope_reconcile(alice_key, w)
 
 if (alice_key_binary == bob_key_binary):

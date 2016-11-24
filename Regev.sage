@@ -42,12 +42,12 @@ shared = generate_polynomial()
 # Alice values
 alice_secret = generate_polynomial()
 alice_error = generate_error()
-alice_value = shared * alice_secret +  2 * alice_error
+alice_value = shared * alice_secret + alice_error
 
 # Bob values
 bob_secret = generate_polynomial()
 bob_error = generate_error()
-bob_value = shared * bob_secret + 2 * bob_error
+bob_value = shared * bob_secret + bob_error
 
 # Bob key
 bob_key = alice_value * bob_secret
