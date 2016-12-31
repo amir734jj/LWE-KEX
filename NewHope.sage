@@ -4,7 +4,7 @@ import itertools, numpy
 from sage.modules.diamond_cutting import calculate_voronoi_cell
 
 dimension = 1024     # degree of polynomials
-modulus = 40961      # modulus
+modulus = 12289      # modulus
 sigma = 8/sqrt(2*pi) # sigma
 
 # Quotient polynomial ring
