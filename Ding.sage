@@ -5,8 +5,8 @@ modulus = 40961      # modulus
 sigma = 8/sqrt(2*pi) # sigma
 
 # Quotient polynomial ring
-R.<X> = PolynomialRing(GF(modulus))     # gaussian field of integers
-Y.<x> = R.quotient(X^(dimension) + 1)   # cyclotomic field
+R.<X> = PolynomialRing(GF(modulus))     # Gaussian field of integers
+Y.<x> = R.quotient(X^(dimension) + 1)   # Cyclotomic field
 
 def generate_error():
     # dimension = 5 (enough for error polynomial) ;  variance = sigma
@@ -14,9 +14,8 @@ def generate_error():
     return Y(f)                                                             
 
 def generate_polynomial():
-    # dimension = dimension ; variance = sigma
-    f = DiscreteGaussianDistributionPolynomialSampler(ZZ['x'], dimension, sigma)()
-    return Y(f)
+	# uniformly sampled from Quotient Polynomial Ring in x over Finite Field
+	return Y.random_element()
     
 def ding_generate_signal(poly):
     coefficients = poly.list()
@@ -50,12 +49,12 @@ def ding_reconcile(poly, w):
 shared = generate_polynomial()
 
 # Alice values
-alice_secret = generate_polynomial()
+alice_secret = generate_error() # secret generated from error distribution
 alice_error = generate_error()
 alice_value = shared * alice_secret +  2 * alice_error
 
 # Bob values
-bob_secret = generate_polynomial()
+bob_secret = generate_error()   # secret generated from error distribution
 bob_error = generate_error()
 bob_value = shared * bob_secret + 2 * bob_error
 
@@ -75,3 +74,4 @@ if (alice_key_binary == bob_key_binary):
     print hex(int(alice_key_binary, 2))
 else:
     print "Keys do not match!"
+    

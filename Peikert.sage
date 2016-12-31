@@ -1,13 +1,13 @@
 import numpy
 from sage.stats.distributions.discrete_gaussian_polynomial import DiscreteGaussianDistributionPolynomialSampler
 
-dimension = 1024 # degree of polynomials
-modulus = 40961  # modulus
+dimension = 1024     # degree of polynomials
+modulus = 40961      # modulus
 sigma = 8/sqrt(2*pi) # sigma
 
 # Quotient polynomial ring
-R.<X> = PolynomialRing(GF(modulus))
-Y.<x> = R.quotient(X^(dimension) + 1)   # cyclotomic field
+R.<X> = PolynomialRing(GF(modulus))     # Gaussian field of integers
+Y.<x> = R.quotient(X^(dimension) + 1)   # Cyclotomic field
 
 def dbl(coefficient, temp_modulus):
     return  ( 2 * int( coefficient ) - numpy.random.choice([-1, 0, 1], p=[0.25, 0.5, 0.25]) ) % temp_modulus
@@ -18,9 +18,8 @@ def generate_error():
     return Y(f)                                                            
 
 def generate_polynomial():
-    # dimension = dimension ; variance = sigma
-    f = DiscreteGaussianDistributionPolynomialSampler(ZZ['x'], dimension, sigma)()
-    return Y(f)
+	# uniformly sampled from Quotient Polynomial Ring in x over Finite Field
+	return Y.random_element()
 
 def peikert_generate_signal(poly):
     coefficients = poly.list()
@@ -71,12 +70,12 @@ def peikert_reconcile(poly, w):
 shared = generate_polynomial()
 
 # Alice values
-alice_secret = generate_polynomial()
+alice_secret = generate_error() # secret generated from error distribution
 alice_error = generate_error()
 alice_value = shared * alice_secret + alice_error
 
 # Bob values
-bob_secret = generate_polynomial()
+bob_secret = generate_error()   # secret generated from error distribution
 bob_error = generate_error()
 bob_value = shared * bob_secret + bob_error
 
@@ -95,3 +94,4 @@ if (alice_key_binary == bob_key_binary):
     print hex(int(alice_key_binary, 2))
 else:
     print "Keys do not match!"
+    
