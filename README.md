@@ -3,8 +3,7 @@ LWE-KEX (Regev, Ding, Peikrt and NewHope) implementations all using SageMath
 
 To run the code make sure you installed SageMath and then run `bench_mark.sh` to test implementations
 
-Below are in seconds. This is not an efficient implementation. Just a SageMath implementation ...
-`
+Below are in seconds. This is not an efficient implementation. Just a [SageMath](http://www.sagemath.org/) implementation ...
 
     | PROTOCOL   |   COUNT |   AVERAGE |
     |------------+---------+-----------|
