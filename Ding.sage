@@ -14,8 +14,8 @@ def generate_error():
     return Y(f)                                                             
 
 def generate_polynomial():
-	# uniformly sampled from Quotient Polynomial Ring in x over Finite Field
-	return Y.random_element()
+    # uniformly sampled from Quotient Polynomial Ring in x over Finite Field
+    return Y.random_element()
     
 def ding_generate_signal(poly):
     coefficients = poly.list()

@@ -9,6 +9,13 @@ sigma = 8/sqrt(2*pi) # sigma
 R.<X> = PolynomialRing(GF(modulus))     # Gaussian field of integers
 Y.<x> = R.quotient(X^(dimension) + 1)   # Cyclotomic field
 
+temp_modulus = (2 * modulus) if is_odd(modulus) else modulus    # if modulus is odd then multiply it by 2
+temp = temp_modulus / 8                 # q/8
+value_1 = temp + (temp_modulus / 4)     # q/8 + q/4
+value_2 = temp + (3 * temp_modulus / 4) # q/8 + 3q/4 
+value_3 = temp                          # q/8    
+value_4 = temp + (temp_modulus / 2)     # q/8 + q/2
+
 def dbl(coefficient, temp_modulus):
     return  ( 2 * int( coefficient ) - numpy.random.choice([-1, 0, 1], p=[0.25, 0.5, 0.25]) ) % temp_modulus
     
@@ -18,53 +25,38 @@ def generate_error():
     return Y(f)                                                            
 
 def generate_polynomial():
-	# uniformly sampled from Quotient Polynomial Ring in x over Finite Field
-	return Y.random_element()
+    # uniformly sampled from Quotient Polynomial Ring in x over Finite Field
+    return Y.random_element()
+
+# randomized double function, notice probability of 0 => 0.5
+def dbl(coefficient):
+    return  ( 2 * int( coefficient ) - numpy.random.choice([-1, 0, 1], p=[0.25, 0.5, 0.25]) ) % temp_modulus
 
 def peikert_generate_signal(poly):
-    coefficients = poly.list()
+    coefficients = map(dbl, poly.list())    # apply dbl function to all coefficient
     signal = []
     
-    temp_modulus = (2 * modulus) if is_odd(modulus) else modulus
-    
     for coefficient in coefficients:
-        coefficient = RR( dbl( coefficient, temp_modulus ) )
-            
+        # if coefficient [0, q/4] OR [q/2, 3q/4] then signal bit = 1 else 0
         if (coefficient) <= (temp_modulus / 4) or \
             ((coefficient) <= (3 * temp_modulus / 4) and (coefficient) >= (temp_modulus / 2)):
             signal.append(1)
         else:
             signal.append(0)
-  
+
     return signal 
 
 def peikert_reconcile(poly, w):
-    coefficients = poly.list()
+    coefficients = map(dbl, poly.list())    # apply dbl function to all coefficient
     key = []
-    
-    temp_modulus = (2 * modulus) if is_odd(modulus) else modulus
-
-    value_1 = ((temp_modulus / 2 - temp_modulus / 4) / 2) + (temp_modulus / 4)
-    value_2 = ((temp_modulus - 3 * temp_modulus / 4) / 2) + (3 * temp_modulus / 4)
-    value_3 = ((temp_modulus / 4 - 0) / 2)
-    value_4 = ((3.0 * temp_modulus / 4 - temp_modulus / 2) / 2) + (temp_modulus / 2)
-        
-    for coefficient, bit in zip(coefficients, w):
-        coefficient = RR( dbl( coefficient, temp_modulus ) )
-        
+    # use signal bit to reconcile
+    for coefficient, bit in zip(coefficients, w):        
         if bit == 1:
-            if coefficient >= value_1 and coefficient <= value_2:
-                key.append(1)
-            else:
-                key.append(0)
+            key.append(1 if coefficient >= value_1 and coefficient <= value_2 else 0)
         else:
-            if coefficient >= value_3 and coefficient <= value_4:
-                key.append(1)
-            else:
-                key.append(0)
+            key.append(1 if coefficient >= value_3 and coefficient <= value_4 else 0)
     
     return "".join(map(str, key))
-
 
 # Shared matrix (A)
 shared = generate_polynomial()

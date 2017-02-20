@@ -9,30 +9,30 @@ R.<X> = PolynomialRing(GF(modulus))     # Gaussian field of integers
 Y.<x> = R.quotient(X^(dimension) + 1)   # Cyclotomic field
 
 def generate_error():
-	# dimension = 5 (enough for error polynomial);  variance = sigma
-	f = DiscreteGaussianDistributionPolynomialSampler(ZZ['x'], 5, sigma)()
-	return Y(f)
+    # dimension = 5 (enough for error polynomial);  variance = sigma
+    f = DiscreteGaussianDistributionPolynomialSampler(ZZ['x'], 5, sigma)()
+    return Y(f)
 
 def generate_polynomial():
-	# uniformly sampled from Quotient Polynomial Ring in x over Finite Field
-	return Y.random_element()
+    # uniformly sampled from Quotient Polynomial Ring in x over Finite Field
+    return Y.random_element()
 
 def regev_reconcile(poly):
-	coefficients = poly.list()
-	key = []
+    coefficients = poly.list()
+    key = []
 
-	value_1 = modulus / 2
-	value_2 = 3.0 * modulus / 4
+    value_1 = modulus / 4
+    value_2 = 3.0 * modulus / 4
 
-	for coefficient in coefficients:
-		coefficient = RR(coefficient)
+    for coefficient in coefficients:
+        coefficient = RR(coefficient)
 
-		if coefficient in range(value_1, value_2):
-			key.append(1)
-		else:
-			key.append(0)
+        if coefficient in range(value_1, value_2):
+            key.append(1)
+        else:
+            key.append(0)
 
-	return "".join(map(str, key))
+    return "".join(map(str, key))
 
 
 # Shared matrix (A)
@@ -57,8 +57,8 @@ alice_key = bob_value * alice_secret
 alice_key_binary = regev_reconcile(alice_key)
 
 if (alice_key_binary == bob_key_binary):
-	print "Keys match!"
-	print hex(int(alice_key_binary, 2))
+    print "Keys match!"
+    print hex(int(alice_key_binary, 2))
 else:
-	print "Keys do not match!", "\n", "alice:\t", hex(int(alice_key_binary, 2)), "\n", "bob:\t", hex(int(bob_key_binary, 2))
-	
+    print "Keys do not match!", "\n", "alice:\t", hex(int(alice_key_binary, 2)), "\n", "bob:\t", hex(int(bob_key_binary, 2))
+    
