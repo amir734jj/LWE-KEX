@@ -12,5 +12,5 @@ Below are in seconds. This is not an efficient implementation. Just a SageMath i
     | DING       |      50 |   8.5711  |
     | PEIKERT    |      50 |   2.22358 |
     | NEWHOPE    |      50 |   4.28662 |
-`
+
 More information here: https://hesamian.com/blog/
